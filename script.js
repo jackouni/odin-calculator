@@ -1,7 +1,7 @@
  // OPERATOR FUNCTIONS
 
- function add(...numbers){ // ADD
-    let sum = 0 ;
+ function add(a, ...numbers){ // ADD
+    let sum = a ;
     for (const number of numbers){
         sum += number
     }
@@ -31,6 +31,21 @@
     }
     return divi
  }
+
+function operate(operator, a, ...numbers){ // The OPERATE
+    if (operator === '+') { 
+        return add(a,...numbers)
+    }
+    if (operator === '-') { 
+       return subtract(a, ...numbers)
+    }
+    if (operator === '*') { 
+        return multiply(a, ...numbers)
+    }
+    if (operator === '/') { 
+       return divide(a, ...numbers)
+    }
+}
 
 
 
