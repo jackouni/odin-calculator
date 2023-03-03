@@ -21,6 +21,8 @@ body {
     background-color: rgb(228, 220, 209);
     border: solid rgb(255, 0, 0) 6px;
     border-radius: 2px;
+    color: black;
+    text-align: end;
 }
 
 #clear-delete {

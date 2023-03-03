@@ -20,8 +20,11 @@
     const zeroBtn = document.getElementById('zero-btn') ;
     const equalsBtn = document.getElementById('equals-btn') ;
     const plusBtn = document.getElementById('plus-btn') ;
- 
- 
+
+    const numBtns = document.getElementsByClassName('num') ;
+    const operatorBtns = document.getElementsByClassName('operator') ;
+
+
  // OPERATOR FUNCTIONS
 
  function add(a, ...numbers){ 
@@ -70,6 +73,38 @@ function operate(operator, a, ...numbers){
        return divide(a, ...numbers)
     }
 }
+
+
+// BUTTON FUNCTIONS
+
+let displayValue = ''; // Stores/saves the user's input
+
+function displayUserInput(e) { // Shows user input on calculator display & saves it to displayValue
+    displayValue += e.target.innerText
+    display.innerText += `${e.target.innerText}`
+}
+
+function clear() { // Clears saved user input (displayValue) & the calculator's display
+    displayValue = '' ;
+    display.innerText = '' ;
+}
+
+function removeLast() { // Removes the last value entered by user (from the claculator display & from displayValue)
+    display.innerText = display.innerText.substring(0, display.innerHTML.length-1)
+    displayValue = displayValue.substring(0, displayValue.length-1)
+
+}
+
+
+// EVENT LISTENERS & HANDLINGS
+
+for (const buttons of numBtns) { 
+    buttons.addEventListener('click', displayUserInput )
+}
+
+clearBtn.addEventListener('click', clear)
+
+deleteBtn.addEventListener('click', removeLast)
 
 
 
