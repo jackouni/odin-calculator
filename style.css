@@ -18,11 +18,14 @@ body {
     width: 90%;
     height: 15%;
     margin:20px;
+    font-size: 48px;
+    font-family: monospace;
     background-color: rgb(228, 220, 209);
     border: solid rgb(255, 0, 0) 6px;
     border-radius: 2px;
     color: black;
     text-align: end;
+
 }
 
 #clear-delete {

@@ -27,50 +27,34 @@
 
  // OPERATOR FUNCTIONS
 
- function add(a, ...numbers){ 
-    let sum = a ;
-    for (const number of numbers){
-        sum += number
-    }
-    return sum
+ function add(a, b){ 
+    return a + b
  }
 
- function subtract(a, ...numbers){ 
-    let sub = a;
-    for(const number of numbers){
-        sub -= number
-    }
-    return sub
+ function subtract(a, b){ 
+    return a - b
  }
 
- function multiply(a, ...numbers){ 
-    let multi = a;
-    for(const number of numbers){
-        multi *= number
-    }
-    return multi
+ function multiply(a, b){ 
+    return a * b
  }
 
- function division(a, ...numbers){ 
-    let divi = a;
-    for(const number of numbers){
-        divi /= number
-    }
-    return divi
+ function division(a, b){ 
+    return a / b
  }
 
-function operate(operator, a, ...numbers){ 
+function operate(operator){ 
     if (operator === '+') { 
-        return add(a,...numbers)
+        return add(a, b)
     }
     if (operator === '-') { 
-       return subtract(a, ...numbers)
+       return subtract(a, b)
     }
     if (operator === '*') { 
-        return multiply(a, ...numbers)
+        return multiply(a, b)
     }
     if (operator === '/') { 
-       return divide(a, ...numbers)
+       return divide(a, b)
     }
 }
 
@@ -105,8 +89,3 @@ for (const buttons of numBtns) {
 clearBtn.addEventListener('click', clear)
 
 deleteBtn.addEventListener('click', removeLast)
-
-
-
-
-
