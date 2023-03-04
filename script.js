@@ -1,5 +1,6 @@
  // SELECTORS
  const display = document.getElementById('display') ;
+ const topDisplay = document.getElementById('top-display') ;
  const clearBtn = document.getElementById('clear-btn') ;
  const deleteBtn = document.getElementById('delete-btn') ;
 
@@ -25,7 +26,7 @@
     const operatorBtns = document.getElementsByClassName('operator') ;
 
 
- // OPERATOR FUNCTIONS
+// OPERATOR FUNCTIONS
 
  function add(a, b){ 
     return a + b
@@ -43,23 +44,28 @@
     return a / b
  }
 
-function operate(operator){ 
-    if (operator === '+') { 
-        return add(a, b)
+
+ /* Calculator's Logic to determine what operator function to apply */
+    function operate(){ 
+        if (activeOperator === '+') { 
+            return add(a, b)
+        }
+        if (activeOperator === '-') { 
+        return subtract(a, b)
+        }
+        if (activeOperator === '*') { 
+            return multiply(a, b)
+        }
+        if (activeOperator === '/') { 
+        return divide(a, b)
+        }
     }
-    if (operator === '-') { 
-       return subtract(a, b)
-    }
-    if (operator === '*') { 
-        return multiply(a, b)
-    }
-    if (operator === '/') { 
-       return divide(a, b)
-    }
-}
 
 
 // BUTTON FUNCTIONS
+let firstInput = null
+let secondInput = null
+let activeOperator = null // Tells us what operator is currently active
 
 let displayValue = ''; // Stores/saves the user's input
 
