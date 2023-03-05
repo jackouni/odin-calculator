@@ -21,6 +21,7 @@ body {
     background-color: rgb(255, 255, 255);
     color: rgba(0, 0, 0, 0.499);
     border-bottom: solid rgba(0, 0, 0, 0.11) 1px;
+    text-align: end;
 }
 
 #display {
