@@ -1,4 +1,5 @@
- // SELECTORS
+// SELECTORS
+
 const display = document.getElementById('display') ;
 const topDisplay = document.getElementById('top-display') ;
 const clearBtn = document.getElementById('clear-btn') ;
@@ -80,8 +81,6 @@ let topDisplayValue = ''; // Stores/saves the user's operator & number inputs as
     activeOperator = null
  }
 
-
-
 function operate(){ // Calculator's Logic to determine what operator function to apply
     if (activeOperator === 'plus-btn') { 
         return add(firstInput, secondInput)
@@ -101,16 +100,13 @@ function operate(){ // Calculator's Logic to determine what operator function to
 // BUTTON FUNCTIONS
 
 function displayUserInput(e) { // Shows user input on calculator display & saves it to displayValue
-    if (displayToBeCleared === true){
+    if (displayToBeCleared === true) {
         clearDisplay()
         displayToBeCleared = false
-        displayValue += e.target.innerText
-        display.innerText += `${e.target.innerText}`
+    } 
 
-    } else {
-        displayValue += e.target.innerText
-        display.innerText += `${e.target.innerText}`
-    }
+    displayValue += e.target.innerText
+    display.innerText += `${e.target.innerText}`
 }
 
 function clearDisplay() { // Clears saved user input (displayValue) & the calculator's displays
@@ -131,7 +127,6 @@ function clear() { // Clears all information stored and resets the caluclator to
 function removeLast() { // Removes the last value entered by user (from the claculator display & from displayValue)
     display.innerText = display.innerText.substring(0, display.innerHTML.length-1)
     displayValue = displayValue.substring(0, displayValue.length-1)
-
 }
 
 function evaluate(e) { // Evaluates if & what operator is clicked/active & whether a calculation needs to be done 
@@ -144,7 +139,6 @@ function evaluate(e) { // Evaluates if & what operator is clicked/active & wheth
         clearDisplay()
         operate(activeOperator)
         activeOperator = e.target.id
-        
     }
 }
 
@@ -164,4 +158,3 @@ clearBtn.addEventListener('click', clear)
 deleteBtn.addEventListener('click', removeLast)
 
 equalsBtn.addEventListener('click', evaluate)
-
