@@ -36,7 +36,8 @@ let activeOperator = null // Tells us what operator is currently active
 let displayToBeCleared = false // Tells us if the display needs to be cleared/reset on next user input
 let canDelete = true // Tells us if we can use the delete/backspace function on our displays
 let canOperate = true // Tells us if user can input another operator
-let expressionToBeCleared = false
+let activeDecimal = false // Tells us if a decimal is being used
+
 
 // OPERATOR FUNCTIONS
 
@@ -49,6 +50,11 @@ let expressionToBeCleared = false
 
     displayToBeCleared = true
     canDelete = false
+    activeDecimal = false
+
+    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
+        answer = answer.toFixed(4)
+    }
 
     display.innerText = answer.toString()
     expressionDisplay.innerText = answer.toString()
@@ -63,6 +69,11 @@ let expressionToBeCleared = false
 
     displayToBeCleared = true
     canDelete = false
+    activeDecimal = false
+
+    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
+        answer = answer.toFixed(4)
+    }
 
     display.innerText = answer.toString()
     expressionDisplay.innerText = answer.toString()
@@ -77,6 +88,11 @@ let expressionToBeCleared = false
 
     displayToBeCleared = true
     canDelete = false
+    activeDecimal = false
+
+    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
+        answer = answer.toFixed(4)
+    }
 
     display.innerText = answer.toString()
     expressionDisplay.innerText = answer.toString()
@@ -98,6 +114,11 @@ let expressionToBeCleared = false
         displayValue = ''
         displayToBeCleared = true
         canDelete = false
+        activeDecimal = false
+
+        if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
+            answer = answer.toFixed(4)
+        }
 
         display.innerText = answer.toString()
         expressionDisplay.innerText = answer.toString()
@@ -163,6 +184,7 @@ function clear() { // Clears all information stored & resets the caluclator to i
     displayToBeCleared = false
     canDelete = true
     expressionDisplay.innerText = ''
+    activeDecimal = false
     clearDisplay()
 }
 
@@ -185,6 +207,7 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
     } 
     
     else if (activeOperator === null) {
+
         if (display.innerText !== "0" && display.innerText == ''){
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
@@ -192,23 +215,43 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
         } else {
             activeOperator = e.target.id 
             firstInput = Number(displayValue)
+            activeDecimal = false
             clearDisplay()
             canDelete = true
         }
 
     } else if (activeOperator !== null) {
+
         if ((!displayValue && !displayValue.length && activeOperator !== "equals-btn") ) {
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: Entered in an operator twice! Please input again.')
         } else {
             secondInput = Number(displayValue)
-            clearDisplay()
             canDelete = false
+            clearDisplay()
             operate(activeOperator)
             activeOperator = e.target.id
         }
     }
+}
+
+function evaluateDecimal(e) {
+    if (!display.innerText) {
+        displayUserInput(e)
+        displayExpression(e)
+        activeDecimal = true
+    } 
+    else if (display.innerText) {
+        if (activeDecimal === false) {
+            activeDecimal = true
+            displayUserInput(e)
+            displayExpression(e)
+        }
+        else if (activeDecimal === true) {
+          return
+        }
+}
 }
 
 
@@ -235,3 +278,5 @@ clearBtn.addEventListener('click', clear)
 deleteBtn.addEventListener('click', removeLastExpression)
 
 equalsBtn.addEventListener('click', evaluateOperator)
+
+decimalBtn.addEventListener('click', evaluateDecimal)
