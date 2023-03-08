@@ -30,14 +30,13 @@ const operatorBtns = document.getElementsByClassName('operator') ;
 
 let firstInput = null // Will store our first operand
 let secondInput = null // Will store our second operand
+let displayValue = ''; // Stores the user's number inputs as a string
+
 let activeOperator = null // Tells us what operator is currently active 
-
 let displayToBeCleared = false // Tells us if the display needs to be cleared/reset on next user input
-let expressionToBeCleared = false // Tells us if the top display needs to be cleared/reset on next user input
 let canDelete = true // Tells us if we can use the delete/backspace function on our displays
-
-let displayValue = ''; // Stores/saves the user's number inputs as a string
-
+let canOperate = true // Tells us if user can input another operator
+let expressionToBeCleared = false
 
 // OPERATOR FUNCTIONS
 
@@ -48,10 +47,10 @@ let displayValue = ''; // Stores/saves the user's number inputs as a string
     displayValue = ''
     activeOperator = null
 
-    display.innerText = answer
     displayToBeCleared = true
     canDelete = false
 
+    display.innerText = answer.toString()
     expressionDisplay.innerText = answer.toString()
  }
 
@@ -62,10 +61,10 @@ let displayValue = ''; // Stores/saves the user's number inputs as a string
     displayValue = ''
     activeOperator = null
 
-    display.innerText = answer
     displayToBeCleared = true
     canDelete = false
 
+    display.innerText = answer.toString()
     expressionDisplay.innerText = answer.toString()
  }
 
@@ -76,25 +75,33 @@ let displayValue = ''; // Stores/saves the user's number inputs as a string
     displayValue = ''
     activeOperator = null
 
-    display.innerText = answer
     displayToBeCleared = true
     canDelete = false
 
+    display.innerText = answer.toString()
     expressionDisplay.innerText = answer.toString()
  }
 
  function division(a, b){ 
-    let answer = a / b
-    firstInput = answer
-    secondInput = null
-    activeOperator = null
+    if (a == 0 || b == 0){
+        setTimeout(clearExpression, 1)
+        setTimeout(clear, 1)
+        alert("Nice try, can't divide by zero. How about you try that again?")
+        clear()
+    }
+    else {
+        let answer = a / b
+        firstInput = answer
+        secondInput = null
+        activeOperator = null
 
-    displayValue = ''
-    display.innerText = answer
-    displayToBeCleared = true
-    canDelete = false
+        displayValue = ''
+        displayToBeCleared = true
+        canDelete = false
 
-    expressionDisplay.innerText = answer.toString()
+        display.innerText = answer.toString()
+        expressionDisplay.innerText = answer.toString()
+    }
  }
 
 function operate(){ // Calculator's Logic to determine what operator function to apply
@@ -119,6 +126,7 @@ function displayUserInput(e) { // Shows user's number input on calculator displa
     if (displayToBeCleared === true) {
         clearDisplay()
         displayToBeCleared = false
+        canDelete = true
     } 
 
     displayValue += e.target.innerText
@@ -130,13 +138,17 @@ function clearDisplay() { // Clears saved user number input (displayValue) & the
     display.innerText = '' ;
 }
 
+function clearExpression() { // Clears the expression display
+    expressionDisplay.innerText = ''
+}
+
 function removeLastDisplay(){ // Removes the last value entered by user (from the calculator display & from displayValue)
     display.innerText = display.innerText.substring(0, display.innerHTML.length-1) ;
     displayValue = displayValue.substring(0, displayValue.length-1) ;
 }
 
 function removeLastExpression() { // Removes last number currently in the expression display
-    if (canDelete === true && display.innerText !== "") { 
+    if (canDelete === true && display.innerText !== "" ) { 
         expressionDisplay.innerText = expressionDisplay.innerText.substring(0, expressionDisplay.innerText.length-1)
         removeLastDisplay()
     } else {
@@ -149,34 +161,43 @@ function clear() { // Clears all information stored & resets the caluclator to i
     secondInput = null
     activeOperator = null
     displayToBeCleared = false
-    expressionToBeCleared = false
+    canDelete = true
     expressionDisplay.innerText = ''
     clearDisplay()
 }
 
 function displayExpression(e) { // Shows user's operator & number inputs as an expression on the top display
-    if (expressionToBeCleared === true) {
-        clearDisplay()
-        expressionToBeCleared = false
-    }
     expressionDisplay.innerText += `${e.target.innerText}`
 }
 
 
 // LOGIC FUNCTIONS
 
-function evaluate(e) { // Evaluates if & what operator is clicked/active & whether a calculation needs to be done 
+function evaluateOperator(e) { // Evaluates if & what operator is clicked/active & whether a calculation should be done 
     if (activeOperator === null) {
-        activeOperator = e.target.id 
-        firstInput = Number(displayValue)
-        canDelete = true
-        clearDisplay()
+        if (display.innerText !== "0" && displayValue == ''){
+            setTimeout(clearExpression, 1)
+            setTimeout(clear, 1)
+            alert('ERROR: You need to enter a number before you can enter an operator! Please input again.')
+        } else {
+            activeOperator = e.target.id 
+            firstInput = Number(displayValue)
+            clearDisplay()
+            canDelete = true
+        }
+
     } else if (activeOperator !== null) {
-        secondInput = Number(displayValue)
-        clearDisplay()
-        canDelete = true
-        operate(activeOperator)
-        activeOperator = e.target.id
+        if (display.innerText == '' || ( (firstInput !== null && displayValue === '') && firstInput !== 0 ) ) {
+            setTimeout(clearExpression, 1)
+            setTimeout(clear, 1)
+            alert('ERROR: You need to enter a number to operate on! Please input again.')
+        } else {
+            secondInput = Number(displayValue)
+            clearDisplay()
+            canDelete = false
+            operate(activeOperator)
+            activeOperator = e.target.id
+        }
     }
 }
 
@@ -188,7 +209,7 @@ for (const buttons of numBtns) {
 }
 
 for (const buttons of operatorBtns) { 
-    buttons.addEventListener('click', evaluate)
+    buttons.addEventListener('click', evaluateOperator)
 }
 
 for (const buttons of numBtns) { 
@@ -197,10 +218,10 @@ for (const buttons of numBtns) {
 
 for (const buttons of operatorBtns) { 
     buttons.addEventListener('click', displayExpression)
-}
+} 
 
 clearBtn.addEventListener('click', clear)
 
 deleteBtn.addEventListener('click', removeLastExpression)
 
-equalsBtn.addEventListener('click', evaluate)
+equalsBtn.addEventListener('click', evaluateOperator)
