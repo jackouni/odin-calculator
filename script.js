@@ -2,25 +2,12 @@
 
 const display = document.getElementById('display') ;
 const expressionDisplay = document.getElementById('top-display') ;
+
 const clearBtn = document.getElementById('clear-btn') ;
 const deleteBtn = document.getElementById('delete-btn') ;
 
-const sevenBtn = document.getElementById('seven-btn') ;
-const eightBtn = document.getElementById('eight-btn') ;
-const nineBtn = document.getElementById('nine-btn') ;
-const divideBtn = document.getElementById('divide-btn') ;
-const fourBtn = document.getElementById('four-btn') ;
-const fiveBtn = document.getElementById('five-btn') ;
-const sixBtn = document.getElementById('six-btn') ;
-const timesBtn = document.getElementById('times-btn') ;
-const oneBtn = document.getElementById('one-btn') ;
-const twoBtn = document.getElementById('two-btn') ;
-const threeBtn = document.getElementById('three-btn') ;
-const minusBtn = document.getElementById('minus-btn') ;
 const decimalBtn = document.getElementById('decimal-btn') ;
-const zeroBtn = document.getElementById('zero-btn') ;
 const equalsBtn = document.getElementById('equals-btn') ;
-const plusBtn = document.getElementById('plus-btn') ;
 
 const numBtns = document.getElementsByClassName('num') ;
 const operatorBtns = document.getElementsByClassName('operator') ;
@@ -54,7 +41,9 @@ let activeDecimal = false // Tells us if a decimal is being used
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
         answer = answer.toFixed(4)
-    }
+    }  else if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+        answer = answer.toFixed(0) 
+     }
 
     display.innerText = answer.toString()
     expressionDisplay.innerText = answer.toString()
@@ -73,6 +62,8 @@ let activeDecimal = false // Tells us if a decimal is being used
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
         answer = answer.toFixed(4)
+    } else if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+       answer = answer.toFixed(0) 
     }
 
     display.innerText = answer.toString()
@@ -92,7 +83,9 @@ let activeDecimal = false // Tells us if a decimal is being used
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
         answer = answer.toFixed(4)
-    }
+    }  else if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+        answer = answer.toFixed(0) 
+     }
 
     display.innerText = answer.toString()
     expressionDisplay.innerText = answer.toString()
@@ -118,7 +111,9 @@ let activeDecimal = false // Tells us if a decimal is being used
 
         if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
             answer = answer.toFixed(4)
-        }
+        }  else if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+            answer = answer.toFixed(0) 
+         }
 
         display.innerText = answer.toString()
         expressionDisplay.innerText = answer.toString()
@@ -236,7 +231,7 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
     }
 }
 
-function evaluateDecimal(e) {
+function evaluateDecimal(e) { // Evaluates if our user has already entered a decimal
     if (!display.innerText) {
         displayUserInput(e)
         displayExpression(e)
