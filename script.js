@@ -26,6 +26,7 @@ let canOperate = true // Tells us if user can input another operator
 let activeDecimal = false // Tells us if a decimal is being used
 
 
+
 // OPERATOR FUNCTIONS
 
  function add(a, b){ 
@@ -41,7 +42,7 @@ let activeDecimal = false // Tells us if a decimal is being used
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
         answer = answer.toFixed(4)
-    }  else if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+    }  if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
         answer = answer.toFixed(0) 
      }
 
@@ -62,7 +63,7 @@ let activeDecimal = false // Tells us if a decimal is being used
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
         answer = answer.toFixed(4)
-    } else if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+    } if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
        answer = answer.toFixed(0) 
     }
 
@@ -83,7 +84,7 @@ let activeDecimal = false // Tells us if a decimal is being used
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
         answer = answer.toFixed(4)
-    }  else if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+    }  if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
         answer = answer.toFixed(0) 
      }
 
@@ -111,7 +112,7 @@ let activeDecimal = false // Tells us if a decimal is being used
 
         if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
             answer = answer.toFixed(4)
-        }  else if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+        } if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
             answer = answer.toFixed(0) 
          }
 
@@ -221,6 +222,11 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: Entered in an operator twice! Please input again.')
+        } else if (e.target.id === "equals-btn") {
+            secondInput = Number(displayValue)
+            canDelete = false
+            clearDisplay()
+            operate(activeOperator)
         } else {
             secondInput = Number(displayValue)
             canDelete = false
