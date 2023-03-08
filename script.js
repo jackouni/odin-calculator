@@ -86,7 +86,7 @@ let expressionToBeCleared = false
     if (a == 0 || b == 0){
         setTimeout(clearExpression, 1)
         setTimeout(clear, 1)
-        alert("Nice try, can't divide by zero. How about you try that again?")
+        alert("Nice try, you can't divide by zero! How about you try that again?")
         clear()
     }
     else {
@@ -174,11 +174,17 @@ function displayExpression(e) { // Shows user's operator & number inputs as an e
 // LOGIC FUNCTIONS
 
 function evaluateOperator(e) { // Evaluates if & what operator is clicked/active & whether a calculation should be done 
+    if (e.target.id === "equals-btn" && firstInput === null){
+        setTimeout(clearExpression, 1)
+        setTimeout(clear, 1)
+        return alert("ERROR: You can't enter an '=' sign without an operator. Please input again.")
+    }
+
     if (activeOperator === null) {
         if (display.innerText !== "0" && displayValue == ''){
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
-            alert('ERROR: You need to enter a number before you can enter an operator! Please input again.')
+            return alert('ERROR: You need to enter a number before you can enter an operator! Please input again.')
         } else {
             activeOperator = e.target.id 
             firstInput = Number(displayValue)
@@ -190,7 +196,7 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
         if (display.innerText == '' || ( (firstInput !== null && displayValue === '') && firstInput !== 0 ) ) {
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
-            alert('ERROR: You need to enter a number to operate on! Please input again.')
+            return alert('ERROR: You need to enter a number to operate on! Please input again.')
         } else {
             secondInput = Number(displayValue)
             clearDisplay()
