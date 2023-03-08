@@ -178,10 +178,14 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
         setTimeout(clearExpression, 1)
         setTimeout(clear, 1)
         return alert("ERROR: You can't enter an '=' sign without an operator. Please input again.")
-    }
-
-    if (activeOperator === null) {
-        if (display.innerText !== "0" && displayValue == ''){
+    } else if (e.target.id === "equals-btn" && !display.innerText && display.innerText.length == 0){
+        setTimeout(clearExpression, 1)
+        setTimeout(clear, 1)
+        return alert("ERROR: You can't enter an '=' sign without an operator. Please input again.")
+    } 
+    
+    else if (activeOperator === null) {
+        if (display.innerText !== "0" && display.innerText == ''){
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: You need to enter a number before you can enter an operator! Please input again.')
@@ -193,10 +197,10 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
         }
 
     } else if (activeOperator !== null) {
-        if (display.innerText == '' || ( (firstInput !== null && displayValue === '') && firstInput !== 0 ) ) {
+        if ((!displayValue && !displayValue.length && activeOperator !== "equals-btn") ) {
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
-            return alert('ERROR: You need to enter a number to operate on! Please input again.')
+            return alert('ERROR: Entered in an operator twice! Please input again.')
         } else {
             secondInput = Number(displayValue)
             clearDisplay()
