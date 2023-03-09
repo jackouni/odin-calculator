@@ -7,24 +7,8 @@ body {
     background-image: linear-gradient( rgb(0, 0, 0), rgb(44, 44, 44), rgb(95, 95, 95));
 }
 
-#positive-negative {
-    font-weight: 200;
-    background-color: white;
-    margin-right: 30px;
-    margin-bottom: 100px;
-    height: 70px;
-    width: 70px;
-    font-size: 28px;
-    border: none;
-    border-radius: 100%;
-    transition: 0.5s;
-}
 
-#positive-negative:hover {
-    background-color:rgb(221, 221, 221) ;
-    font-weight: 300;
-    border: solid black 2px;
-}
+/* CONTAINERS */
 
 #calculator {
     display: flex;
@@ -34,6 +18,24 @@ body {
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.406);
     background-color:transparent;
 }
+
+#clear-delete {
+    display: flex;
+    width: auto;
+    height: 100px;
+}
+
+#btns-container {
+    display: grid;
+    width:400px;
+    height: 450px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    justify-content: center;
+}
+
+
+/* 'DISPLAYS' */
 
 #top-display {
     width: auto;
@@ -56,43 +58,15 @@ body {
     text-align: end;
 }
 
+
+/* BUTTONS */
+
 .btn {
     font-size: 24px; 
     font-weight: 100;
     border: none;
     background-color:rgb(255, 255, 255) ;
     transition: 0.5s;
-}
-
-.num:hover {
-    font-weight: 300;
-    background-color:rgb(239, 239, 239) ;
-}
-
-.equals {
-    background-color: rgb(254, 254, 254);
-    transition: 0.5s;
-}
-
-.equals:hover {
-    background-color: rgb(230, 255, 233);
-    font-weight: 300;
-}
-
-.operator {
-    background-color:rgb(255, 249, 233) ;
-    transition: 0.5s;
-}
-
-.operator:hover {
-    background-color:rgb(249, 234, 174) ;
-    font-weight: 300;
-}
-
-#clear-delete {
-    display: flex;
-    width: auto;
-    height: 100px;
 }
 
 #clear-btn {  
@@ -102,10 +76,6 @@ body {
     transition: 0.5s;
 }
 
-#clear-btn:hover {
-    background-color: rgb(252, 192, 192);
-}
-
 #delete-btn {
     width: 50%;
     font-weight: 400;
@@ -113,20 +83,63 @@ body {
     transition: 0.5s;
 }
 
+#positive-negative {
+    font-weight: 200;
+    background-color: white;
+    margin-right: 30px;
+    margin-bottom: 100px;
+    height: 70px;
+    width: 70px;
+    font-size: 28px;
+    border: none;
+    border-radius: 100%;
+    transition: 0.5s;
+}
+
+.operator {
+    background-color:rgb(255, 249, 233) ;
+    transition: 0.5s;
+}
+
+.equals {
+    background-color: rgb(254, 254, 254);
+    transition: 0.5s;
+}
+
+
+/* BUTTON HOVER EVENTS */
+
+#clear-btn:hover {
+    background-color: rgb(252, 192, 192);
+}
+
 #delete-btn:hover {
     background-color: rgb(202, 202, 255);
+}
+
+#positive-negative:hover {
+    background-color:rgb(221, 221, 221) ;
+    font-weight: 300;
+}
+
+.num:hover {
+    font-weight: 300;
+    background-color:rgb(239, 239, 239) ;
+}
+
+.operator:hover {
+    background-color:rgb(249, 234, 174) ;
+    font-weight: 300;
+}
+
+.equals:hover {
+    background-color: rgb(230, 255, 233);
+    font-weight: 300;
 }
 
 #decimal-btn:hover {
     background-color:rgb(239, 239, 239) ;
     font-weight: 300;
 }
-#btns-container {
-    display: grid;
-    width:400px;
-    height: 450px;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    justify-content: center;
-}
+
 

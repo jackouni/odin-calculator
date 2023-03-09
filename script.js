@@ -199,7 +199,7 @@ function displayExpression(e) { // Shows user's operator & number inputs as an e
 function evaluateOperator(e) { // Evaluates if & what operator is clicked/active & whether a calculation should be done 
     if (activeOperator === null) {
 
-        if (display.innerText !== "0" && display.innerText === ''){ // Don't allow user to enter an operator & don't operate on it
+        if (display.innerText !== "0" && display.innerText === ''){ // Don't allow user to enter an operator & reset calculator
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: You need to enter a number before you can enter an operator! Please input again.')
@@ -215,7 +215,7 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
 
     else if (activeOperator !== null) {
 
-        if ((!displayValue && !displayValue.length) ) { // Don't allow user to enter an operator & don't operate on it
+        if ((!displayValue && !displayValue.length) ) { // Don't allow user to enter an operator & reset calculator
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: Entered in an operator twice! Please input again.')
@@ -243,15 +243,13 @@ function evaluateDecimal(e) { // Evaluates if our user has already entered a dec
             displayUserInput(e)
             displayExpression(e)
         }
-        else if (activeDecimal === true) { // Don't allow a decimal to be inputted by user & do nothing
-          return
-        }
-}
+        else if (activeDecimal === true) return // Don't allow a decimal to be inputted by user & do nothing
+    }
 }
 
 function evaluateEquals() { // Evaluates if current input(s)/expression can be operated on when '=' is clicked
 
-    if ( (firstInput || firstInput === 0) && displayValue) { // Allow user to input '=', apply logic & operate on it.
+    if ( (firstInput || firstInput === 0) && displayValue) { // Allow user to input '=', apply logic, & operate on it.
         secondInput = Number(displayValue)
         canDelete = false
         clearDisplay()
@@ -259,7 +257,7 @@ function evaluateEquals() { // Evaluates if current input(s)/expression can be o
     }
     else if ( (firstInput && !displayValue)
         || (!firstInput)
-        || (!activeOperator) ) { // Don't allow user to input an '=', don't operate on it, reset calculator.
+        || (!activeOperator) ) { // Don't allow user to input an '=' & reset calculator
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert("ERROR: You can't enter an '=' sign without an operator and/or input. Please input again.")
@@ -292,8 +290,6 @@ deleteBtn.addEventListener('click', removeLastExpression)
 equalsBtn.addEventListener('click', evaluateEquals)
 
 decimalBtn.addEventListener('click', evaluateDecimal)
-
-positiveNegativeBtn.addEventListener('click', )
 
 
 // KEYDOWN EVENTS
