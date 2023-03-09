@@ -140,7 +140,9 @@ function operate(){ // Calculator's Logic to determine what operator function to
 // DISPLAY FUNCTIONS
 
 function displayUserInput(e) { // Shows user's number input on calculator display & saves it to displayValue
-    if (displayToBeCleared === true) {
+    if (firstInput && !activeOperator) return alert('Please enter an operator')
+
+    else if (displayToBeCleared === true) {
         clearDisplay()
         displayToBeCleared = false
         canDelete = true
@@ -148,6 +150,7 @@ function displayUserInput(e) { // Shows user's number input on calculator displa
 
     displayValue += e.target.innerText
     display.innerText += `${e.target.innerText}`
+
 }
 
 function clearDisplay() { // Clears saved user number input (displayValue) & the calculator's displays
@@ -185,48 +188,32 @@ function clear() { // Clears all information stored & resets the caluclator to i
 }
 
 function displayExpression(e) { // Shows user's operator & number inputs as an expression on the top display
-    expressionDisplay.innerText += `${e.target.innerText}`
+    if (firstInput && !activeOperator) return 
+    else expressionDisplay.innerText += `${e.target.innerText}`
 }
 
 
 // LOGIC FUNCTIONS
 
 function evaluateOperator(e) { // Evaluates if & what operator is clicked/active & whether a calculation should be done 
-    if (e.target.id === "equals-btn" && firstInput === null){
-        setTimeout(clearExpression, 1)
-        setTimeout(clear, 1)
-        return alert("ERROR: You can't enter an '=' sign without an operator. Please input again.")
-    } else if (e.target.id === "equals-btn" && !display.innerText && display.innerText.length == 0){
-        setTimeout(clearExpression, 1)
-        setTimeout(clear, 1)
-        return alert("ERROR: You can't enter an '=' sign without an operator. Please input again.")
-    } 
-    
-    else if (activeOperator === null) {
-
-        if (display.innerText !== "0" && display.innerText == ''){
+    if (activeOperator === null) {
+        if (display.innerText !== "0" && display.innerText === ''){
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: You need to enter a number before you can enter an operator! Please input again.')
         } else {
             activeOperator = e.target.id 
-            firstInput = Number(displayValue)
+            if (firstInput === null) firstInput = Number(displayValue)
             activeDecimal = false
             clearDisplay()
             canDelete = true
         }
-
-    } else if (activeOperator !== null) {
-
-        if ((!displayValue && !displayValue.length && activeOperator !== "equals-btn") ) {
+    }
+    else if (activeOperator !== null) {
+        if ((!displayValue && !displayValue.length) ) {
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: Entered in an operator twice! Please input again.')
-        } else if (e.target.id === "equals-btn") {
-            secondInput = Number(displayValue)
-            canDelete = false
-            clearDisplay()
-            operate(activeOperator)
         } else {
             secondInput = Number(displayValue)
             canDelete = false
@@ -255,8 +242,25 @@ function evaluateDecimal(e) { // Evaluates if our user has already entered a dec
 }
 }
 
+function evaluateEquals() { // Evaluates if current input(s)/expression can be operated on when '=' is clicked
+    if ( (firstInput || firstInput === 0) && displayValue) {
+        secondInput = Number(displayValue)
+        canDelete = false
+        clearDisplay()
+        operate(activeOperator) 
+    }
+    else if ( (firstInput && !displayValue)
+        || (!firstInput)
+        || (!activeOperator) ) {
+            setTimeout(clearExpression, 1)
+            setTimeout(clear, 1)
+            return alert("ERROR: You can't enter an '=' sign without an operator and/or input. Please input again.")
+        }
 
-// EVENT LISTENERS & HANDLINGS
+}
+
+
+// CLICK EVENTS
 
 for (const buttons of numBtns) { 
     buttons.addEventListener('click', displayUserInput )
@@ -278,6 +282,18 @@ clearBtn.addEventListener('click', clear)
 
 deleteBtn.addEventListener('click', removeLastExpression)
 
-equalsBtn.addEventListener('click', evaluateOperator)
+equalsBtn.addEventListener('click', evaluateEquals)
 
 decimalBtn.addEventListener('click', evaluateDecimal)
+
+
+// KEYDOWN EVENTS
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Backspace'){
+        removeLastExpression()
+    }
+    if (e.key === 'Backspace' && e.shiftKey === true) {
+        clear()
+    }
+})
