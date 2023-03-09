@@ -5,6 +5,7 @@ const expressionDisplay = document.getElementById('top-display') ;
 
 const clearBtn = document.getElementById('clear-btn') ;
 const deleteBtn = document.getElementById('delete-btn') ;
+const positiveNegativeBtn = document.getElementById('positive-negative') ;
 
 const decimalBtn = document.getElementById('decimal-btn') ;
 const equalsBtn = document.getElementById('equals-btn') ;
@@ -15,16 +16,16 @@ const operatorBtns = document.getElementsByClassName('operator') ;
 
 // VARIABLES
 
-let firstInput = null // Will store our first operand
-let secondInput = null // Will store our second operand
+let firstInput = null // Stores our first operand
+let secondInput = null // Stores our second operand
 let displayValue = ''; // Stores the user's number inputs as a string
 
+    // Boolean Logic:
 let activeOperator = null // Tells us what operator is currently active 
 let displayToBeCleared = false // Tells us if the display needs to be cleared/reset on next user input
 let canDelete = true // Tells us if we can use the delete/backspace function on our displays
 let canOperate = true // Tells us if user can input another operator
 let activeDecimal = false // Tells us if a decimal is being used
-
 
 
 // OPERATOR FUNCTIONS
@@ -41,7 +42,7 @@ let activeDecimal = false // Tells us if a decimal is being used
     activeDecimal = false
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
-        answer = answer.toFixed(4)
+        answer = answer.toFixed(3)
     }  if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
         answer = answer.toFixed(0) 
      }
@@ -62,7 +63,7 @@ let activeDecimal = false // Tells us if a decimal is being used
     activeDecimal = false
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
-        answer = answer.toFixed(4)
+        answer = answer.toFixed(3)
     } if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
        answer = answer.toFixed(0) 
     }
@@ -83,7 +84,7 @@ let activeDecimal = false // Tells us if a decimal is being used
     activeDecimal = false
 
     if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
-        answer = answer.toFixed(4)
+        answer = answer.toFixed(3)
     }  if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
         answer = answer.toFixed(0) 
      }
@@ -93,7 +94,7 @@ let activeDecimal = false // Tells us if a decimal is being used
  }
 
  function division(a, b){ 
-    if (a == 0 || b == 0){
+    if (b == 0){
         setTimeout(clearExpression, 1)
         setTimeout(clear, 1)
         alert("Nice try, you can't divide by zero! How about you try that again?")
@@ -111,7 +112,7 @@ let activeDecimal = false // Tells us if a decimal is being used
         activeDecimal = false
 
         if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
-            answer = answer.toFixed(4)
+            answer = answer.toFixed(3)
         } if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
             answer = answer.toFixed(0) 
          }
@@ -137,7 +138,7 @@ function operate(){ // Calculator's Logic to determine what operator function to
 }
 
 
-// DISPLAY FUNCTIONS
+// DISPLAY & INPUT FUNCTIONS
 
 function displayUserInput(e) { // Shows user's number input on calculator display & saves it to displayValue
     if (firstInput && !activeOperator) return alert('Please enter an operator')
@@ -153,7 +154,7 @@ function displayUserInput(e) { // Shows user's number input on calculator displa
 
 }
 
-function clearDisplay() { // Clears saved user number input (displayValue) & the calculator's displays
+function clearDisplay() { // Clears saved user number input (displayValue) & the calculator's display
     displayValue = '';
     display.innerText = '' ;
 }
@@ -162,12 +163,12 @@ function clearExpression() { // Clears the expression display
     expressionDisplay.innerText = ''
 }
 
-function removeLastDisplay(){ // Removes the last value entered by user (from the calculator display & from displayValue)
+function removeLastDisplay(){ // Removes/deletes the last value entered by user (from the calculator display & from displayValue)
     display.innerText = display.innerText.substring(0, display.innerHTML.length-1) ;
     displayValue = displayValue.substring(0, displayValue.length-1) ;
 }
 
-function removeLastExpression() { // Removes last number currently in the expression display
+function removeLastExpression() { // Removes/deletes last number currently in the expression display
     if (canDelete === true && display.innerText !== "" ) { 
         expressionDisplay.innerText = expressionDisplay.innerText.substring(0, expressionDisplay.innerText.length-1)
         removeLastDisplay()
@@ -187,7 +188,7 @@ function clear() { // Clears all information stored & resets the caluclator to i
     clearDisplay()
 }
 
-function displayExpression(e) { // Shows user's operator & number inputs as an expression on the top display
+function displayExpression(e) { // Shows user's operator & number inputs as an expression in the expression display
     if (firstInput && !activeOperator) return 
     else expressionDisplay.innerText += `${e.target.innerText}`
 }
@@ -197,11 +198,13 @@ function displayExpression(e) { // Shows user's operator & number inputs as an e
 
 function evaluateOperator(e) { // Evaluates if & what operator is clicked/active & whether a calculation should be done 
     if (activeOperator === null) {
-        if (display.innerText !== "0" && display.innerText === ''){
+
+        if (display.innerText !== "0" && display.innerText === ''){ // Don't allow user to enter an operator & don't operate on it
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: You need to enter a number before you can enter an operator! Please input again.')
-        } else {
+
+        } else { // Allow user to enter an operator, apply logic, & operate on it
             activeOperator = e.target.id 
             if (firstInput === null) firstInput = Number(displayValue)
             activeDecimal = false
@@ -209,12 +212,15 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
             canDelete = true
         }
     }
+
     else if (activeOperator !== null) {
-        if ((!displayValue && !displayValue.length) ) {
+
+        if ((!displayValue && !displayValue.length) ) { // Don't allow user to enter an operator & don't operate on it
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert('ERROR: Entered in an operator twice! Please input again.')
-        } else {
+
+        } else { // Allow user to enter an operator, apply logic, & operate on it
             secondInput = Number(displayValue)
             canDelete = false
             clearDisplay()
@@ -225,25 +231,27 @@ function evaluateOperator(e) { // Evaluates if & what operator is clicked/active
 }
 
 function evaluateDecimal(e) { // Evaluates if our user has already entered a decimal
-    if (!display.innerText) {
+
+    if (!display.innerText) { // Allow user to input a decimal, display it & apply logic
         displayUserInput(e)
         displayExpression(e)
         activeDecimal = true
     } 
-    else if (display.innerText) {
+    else if (display.innerText) { 
         if (activeDecimal === false) {
             activeDecimal = true
             displayUserInput(e)
             displayExpression(e)
         }
-        else if (activeDecimal === true) {
+        else if (activeDecimal === true) { // Don't allow a decimal to be inputted by user & do nothing
           return
         }
 }
 }
 
 function evaluateEquals() { // Evaluates if current input(s)/expression can be operated on when '=' is clicked
-    if ( (firstInput || firstInput === 0) && displayValue) {
+
+    if ( (firstInput || firstInput === 0) && displayValue) { // Allow user to input '=', apply logic & operate on it.
         secondInput = Number(displayValue)
         canDelete = false
         clearDisplay()
@@ -251,12 +259,11 @@ function evaluateEquals() { // Evaluates if current input(s)/expression can be o
     }
     else if ( (firstInput && !displayValue)
         || (!firstInput)
-        || (!activeOperator) ) {
+        || (!activeOperator) ) { // Don't allow user to input an '=', don't operate on it, reset calculator.
             setTimeout(clearExpression, 1)
             setTimeout(clear, 1)
             return alert("ERROR: You can't enter an '=' sign without an operator and/or input. Please input again.")
-        }
-
+    }
 }
 
 
@@ -285,6 +292,8 @@ deleteBtn.addEventListener('click', removeLastExpression)
 equalsBtn.addEventListener('click', evaluateEquals)
 
 decimalBtn.addEventListener('click', evaluateDecimal)
+
+positiveNegativeBtn.addEventListener('click', )
 
 
 // KEYDOWN EVENTS
