@@ -137,7 +137,7 @@ function operate(){ // Calculator's Logic to determine what operator function to
 // DISPLAY & INPUT FUNCTIONS
 
 function displayUserInput(e) { // Shows user's number input on calculator display & saves it to displayValue
-    if (firstInput && !activeOperator) return alert('Please enter an operator')
+    if (firstInput && !activeOperator) return 
 
     else if (displayToBeCleared === true) {
         clearDisplay()
@@ -255,9 +255,7 @@ function evaluateEquals() { // Evaluates if current input(s)/expression can be o
     else if ( (firstInput && !displayValue)
         || (!firstInput)
         || (!activeOperator) ) { // Don't allow user to input an '=' & reset calculator
-            setTimeout(clearExpression, 1)
-            setTimeout(clear, 1)
-            return alert("ERROR: You can't enter an '=' sign without an operator and/or input. Please input again.")
+            return 
     }
 }
 
@@ -362,13 +360,13 @@ posNegBtn.addEventListener('click', evaluatePosNeg)
 // KEYDOWN EVENTS
 
 document.addEventListener('keydown', e => { 
-    if (e.key === 'Backspace'){ 
+    if (e.key === 'Backspace' || e.key.toLowerCase() === 'd'){ 
         removeLastExpression()
     }
-    if (e.key === 'Backspace' && e.shiftKey === true) {
+    if ((e.key === 'Backspace' && e.shiftKey === true) || e.key.toLowerCase() === 'c' ) {
         clear()
     }
-    if (e.key.toLowerCase() === 'p' || 'n') {
+    if (e.key.toLowerCase() === 'p' || e.key.toLowerCase() === 'n') {
         evaluatePosNeg()
     }
 })
