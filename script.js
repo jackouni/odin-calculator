@@ -265,43 +265,70 @@ function evaluateEquals() { // Evaluates if current input(s)/expression can be o
 
 function evaluatePosNeg() { // Converts user's current input from positive to negative & vice versa
     
-    if (!displayValue && firstInput && activeOperator === null) { // The state after hitting '=' & performing a calculation
+    if (!displayValue && firstInput && !activeOperator) { // The state after user hits '=' button & a calculation is made
 
         if (firstInput >= 0) {
 
             firstInput = firstInput * -1
-            displayValue = firstInput.toString()
-            posNegLength = displayValue.length
-            display.innerText = displayValue
-
-            expressionDisplay.innerText = expressionDisplay.innerText.substring(0, expressionDisplay.innerText.length - (displayValue.length -1) )
-            expressionDisplay.innerText += `(${displayValue})`
-            posNegInUse = true
+            display.innerText = firstInput.toString()
+            expressionDisplay.innerText = `${firstInput.toString()}`
 
         } else if (firstInput < 0) {
 
             firstInput = firstInput * -1
-            displayValue = firstInput.toString()
-            display.innerText = displayValue
-            
-            expressionDisplay.innerText = displayValue
-        }
+            display.innerText = firstInput.toString()
+            expressionDisplay.innerText = firstInput.toString()
+        } 
+    }
+    else if (displayValue && !firstInput ) { // The starting state of the calculator
 
+        if (Number(displayValue) >= 0){
+
+            displayValue = (Number(displayValue) * -1).toString()
+            display.innerText = displayValue
+            expressionDisplay.innerText = expressionDisplay.innerText.substring(0, expressionDisplay.innerText.length - (displayValue.length -1) )
+            expressionDisplay.innerText = `${displayValue}`
+
+        } else if (Number(displayValue) < 0) {
+
+            displayValue = (Number(displayValue) * -1).toString()
+            display.innerText = displayValue
+            expressionDisplay.innerText = expressionDisplay.innerText.substring(0, expressionDisplay.innerText.length - (displayValue.length -1) )
+            expressionDisplay.innerText = `${displayValue}`
+        }
     } 
-    else if (displayValue && !firstInput){ // The starting state of the calculator
+    else if (displayValue && firstInput && activeOperator) { // The state of the caluclator after user enters a first input & an operator
 
         if (Number(displayValue) >= 0) {
-        posNegLength = displayValue.length
-        displayValue = (Number(displayValue) * -1).toString()
-        display.innerText = displayValue
-        expressionDisplay.innerText = expressionDisplay.innerText.substring(0, expressionDisplay.innerText.length - (displayValue.length -1) )
-        expressionDisplay.innerText += `(${displayValue})`
-        posNegInUse = true
-        }
-        else if (Number(displayValue) < 0 && posNegInUse) {
-        }
 
-    } 
+            displayValue = (Number(displayValue) * -1).toString()
+            display.innerText = displayValue
+
+            let operatorIndex = expressionDisplay.innerText.indexOf(operatorStr())  // Index of the operator symbol in the expression display
+            let currentDisplayInput = expressionDisplay.innerText.substring(operatorIndex + 1)
+            let firstInputAndOperator = expressionDisplay.innerText.substring(0, operatorIndex + 1)
+
+            expressionDisplay.innerText = `${firstInputAndOperator}(-${currentDisplayInput})`
+
+        } else if (Number(displayValue) < 0) {
+
+            displayValue = (Number(displayValue) * -1).toString()
+            display.innerText = displayValue
+
+            let operatorIndex = expressionDisplay.innerText.indexOf(operatorStr())  // Index of the operator symbol in the expression display
+            let firstInputAndOperator = expressionDisplay.innerText.substring(0, operatorIndex + 1)
+
+            expressionDisplay.innerText = `${firstInputAndOperator}${displayValue}`
+        }
+    }
+}
+
+function operatorStr() { // Converts our currently 'activeOperator' to it's corresponding string
+    if (activeOperator === 'plus-btn') return '+'
+    if (activeOperator === 'minus-btn') return '-'
+    if (activeOperator === 'times-btn') return '×'
+    if (activeOperator === 'divide-btn') return '÷'
+
 }
 
 
