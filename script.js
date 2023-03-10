@@ -5,7 +5,7 @@ const expressionDisplay = document.getElementById('top-display') ;
 
 const clearBtn = document.getElementById('clear-btn') ;
 const deleteBtn = document.getElementById('delete-btn') ;
-const positiveNegativeBtn = document.getElementById('positive-negative') ;
+const posNegBtn = document.getElementById('positive-negative') ;
 
 const decimalBtn = document.getElementById('decimal-btn') ;
 const equalsBtn = document.getElementById('equals-btn') ;
@@ -19,6 +19,7 @@ const operatorBtns = document.getElementsByClassName('operator') ;
 let firstInput = null // Stores our first operand
 let secondInput = null // Stores our second operand
 let displayValue = ''; // Stores the user's number inputs as a string
+let posNegLength = null // Will store the string length of the user's current input (for evaluatePosNeg function)
 
     // Boolean Logic:
 let activeOperator = null // Tells us what operator is currently active 
@@ -26,6 +27,7 @@ let displayToBeCleared = false // Tells us if the display needs to be cleared/re
 let canDelete = true // Tells us if we can use the delete/backspace function on our displays
 let canOperate = true // Tells us if user can input another operator
 let activeDecimal = false // Tells us if a decimal is being used
+let posNegInUse = false // Tells us if our positive/negative function is being toggled/in use
 
 
 // OPERATOR FUNCTIONS
@@ -41,9 +43,10 @@ let activeDecimal = false // Tells us if a decimal is being used
     canDelete = false
     activeDecimal = false
 
-    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
+    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 3rd decimal place
         answer = answer.toFixed(3)
-    }  if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+    }  
+    if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
         answer = answer.toFixed(0) 
      }
 
@@ -62,9 +65,10 @@ let activeDecimal = false // Tells us if a decimal is being used
     canDelete = false
     activeDecimal = false
 
-    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
+    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 3rd decimal place
         answer = answer.toFixed(3)
-    } if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+    } 
+    if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
        answer = answer.toFixed(0) 
     }
 
@@ -83,9 +87,10 @@ let activeDecimal = false // Tells us if a decimal is being used
     canDelete = false
     activeDecimal = false
 
-    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
+    if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 3rd decimal place
         answer = answer.toFixed(3)
-    }  if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+    }  
+    if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
         answer = answer.toFixed(0) 
      }
 
@@ -111,9 +116,10 @@ let activeDecimal = false // Tells us if a decimal is being used
         canDelete = false
         activeDecimal = false
 
-        if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 4th decimal place
+        if (answer % 1 !== 0){ // If answer has a decimal point in it --> round to 3rd decimal place
             answer = answer.toFixed(3)
-        } if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
+        } 
+        if (answer % 1 === 0) { // If no decimal point --> round to be a whole number
             answer = answer.toFixed(0) 
          }
 
@@ -123,18 +129,10 @@ let activeDecimal = false // Tells us if a decimal is being used
  }
 
 function operate(){ // Calculator's Logic to determine what operator function to apply
-    if (activeOperator === 'plus-btn') { 
-        return add(firstInput, secondInput)
-    }
-    if (activeOperator === 'minus-btn') { 
-        return subtract(firstInput, secondInput)
-    }
-    if (activeOperator === 'times-btn') { 
-        return multiply(firstInput, secondInput)
-    }
-    if (activeOperator === 'divide-btn') { 
-        return division(firstInput, secondInput)
-    }
+    if (activeOperator === 'plus-btn') return add(firstInput, secondInput)
+    if (activeOperator === 'minus-btn') return subtract(firstInput, secondInput)
+    if (activeOperator === 'times-btn') return multiply(firstInput, secondInput)
+    if (activeOperator === 'divide-btn') return division(firstInput, secondInput)
 }
 
 
@@ -157,6 +155,7 @@ function displayUserInput(e) { // Shows user's number input on calculator displa
 function clearDisplay() { // Clears saved user number input (displayValue) & the calculator's display
     displayValue = '';
     display.innerText = '' ;
+    posNegInUse = false
 }
 
 function clearExpression() { // Clears the expression display
@@ -249,7 +248,7 @@ function evaluateDecimal(e) { // Evaluates if our user has already entered a dec
 
 function evaluateEquals() { // Evaluates if current input(s)/expression can be operated on when '=' is clicked
 
-    if ( (firstInput || firstInput === 0) && displayValue) { // Allow user to input '=', apply logic, & operate on it.
+    if ( (firstInput || firstInput === 0) && displayValue ) { // Allow user to input '=', apply logic, & operate on it.
         secondInput = Number(displayValue)
         canDelete = false
         clearDisplay()
@@ -262,6 +261,47 @@ function evaluateEquals() { // Evaluates if current input(s)/expression can be o
             setTimeout(clear, 1)
             return alert("ERROR: You can't enter an '=' sign without an operator and/or input. Please input again.")
     }
+}
+
+function evaluatePosNeg() { // Converts user's current input from positive to negative & vice versa
+    
+    if (!displayValue && firstInput && activeOperator === null) { // The state after hitting '=' & performing a calculation
+
+        if (firstInput >= 0) {
+
+            firstInput = firstInput * -1
+            displayValue = firstInput.toString()
+            posNegLength = displayValue.length
+            display.innerText = displayValue
+
+            expressionDisplay.innerText = expressionDisplay.innerText.substring(0, expressionDisplay.innerText.length - (displayValue.length -1) )
+            expressionDisplay.innerText += `(${displayValue})`
+            posNegInUse = true
+
+        } else if (firstInput < 0) {
+
+            firstInput = firstInput * -1
+            displayValue = firstInput.toString()
+            display.innerText = displayValue
+            
+            expressionDisplay.innerText = displayValue
+        }
+
+    } 
+    else if (displayValue && !firstInput){ // The starting state of the calculator
+
+        if (Number(displayValue) >= 0) {
+        posNegLength = displayValue.length
+        displayValue = (Number(displayValue) * -1).toString()
+        display.innerText = displayValue
+        expressionDisplay.innerText = expressionDisplay.innerText.substring(0, expressionDisplay.innerText.length - (displayValue.length -1) )
+        expressionDisplay.innerText += `(${displayValue})`
+        posNegInUse = true
+        }
+        else if (Number(displayValue) < 0 && posNegInUse) {
+        }
+
+    } 
 }
 
 
@@ -291,14 +331,19 @@ equalsBtn.addEventListener('click', evaluateEquals)
 
 decimalBtn.addEventListener('click', evaluateDecimal)
 
+posNegBtn.addEventListener('click', evaluatePosNeg)
+
 
 // KEYDOWN EVENTS
 
-document.addEventListener('keydown', e => {
-    if (e.key === 'Backspace'){
+document.addEventListener('keydown', e => { 
+    if (e.key === 'Backspace'){ 
         removeLastExpression()
     }
     if (e.key === 'Backspace' && e.shiftKey === true) {
         clear()
+    }
+    if (e.key.toLowerCase() === 'p' || 'n') {
+        evaluatePosNeg()
     }
 })
