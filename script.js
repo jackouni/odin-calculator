@@ -19,7 +19,6 @@ const operatorBtns = document.getElementsByClassName('operator') ;
 let firstInput = null // Stores our first operand
 let secondInput = null // Stores our second operand
 let displayValue = ''; // Stores the user's number inputs as a string
-let posNegLength = null // Will store the string length of the user's current input (for evaluatePosNeg function)
 
     // Boolean Logic:
 let activeOperator = null // Tells us what operator is currently active 
