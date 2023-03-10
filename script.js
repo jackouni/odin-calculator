@@ -27,7 +27,6 @@ let displayToBeCleared = false // Tells us if the display needs to be cleared/re
 let canDelete = true // Tells us if we can use the delete/backspace function on our displays
 let canOperate = true // Tells us if user can input another operator
 let activeDecimal = false // Tells us if a decimal is being used
-let posNegInUse = false // Tells us if our positive/negative function is being toggled/in use
 
 
 // OPERATOR FUNCTIONS
